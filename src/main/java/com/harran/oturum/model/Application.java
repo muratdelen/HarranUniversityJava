@@ -1,9 +1,10 @@
 package com.harran.oturum.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
-
+@Data
 @Entity
 @Table(name="applications")
 public class Application {
@@ -14,28 +15,25 @@ public class Application {
     private String title;
     private String description;
 
-    @OneToOne
-    @JoinColumn(name = "created_by_user_id", referencedColumnName = "id")  // foreign key
+    //Standart bilgiler
+    @ManyToOne
+    @JoinColumn(name = "crated_by_user_id", referencedColumnName = "id")// foreign key
     private User cratedByUser;
-
-    @OneToOne
-    @JoinColumn(name = "update_by_user_id", referencedColumnName = "id")  // foreign key
+    @ManyToOne
+    @JoinColumn(name = "updated_by_user_id", referencedColumnName = "id") // foreign key
     private User updatedByUser;
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
+    @Column(name = "created", nullable = false, updatable = false)
+    private LocalDateTime created;
+    @Column(name = "modified")
+    private LocalDateTime modified;
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now(); // Set the creation time when the entity is saved
-        updatedAt = LocalDateTime.now(); // Initialize updatedAt as well
+        created = LocalDateTime.now(); // Set the creation time when the entity is saved
+        modified = LocalDateTime.now(); // Initialize updatedAt as well
     }
-
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now(); // Update this field whenever the entity is updated
+        modified = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-    private boolean is_active;
+    private boolean is_active = true;
 }

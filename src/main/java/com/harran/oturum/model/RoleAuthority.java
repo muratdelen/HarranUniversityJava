@@ -1,18 +1,23 @@
 package com.harran.oturum.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-public class UserAuthority {
+@Data
+@Entity
+@Table(name="role_authorities")
+public class RoleAuthority {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private String description;
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")  // foreign key
-    private User user;
+    @JoinColumn(name = "role_id", referencedColumnName = "id")  // foreign key
+    private Role role;
     @ManyToOne
     @JoinColumn(name = "authority_id", referencedColumnName = "id")  // foreign key
     private Authority authority;

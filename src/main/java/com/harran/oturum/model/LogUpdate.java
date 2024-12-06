@@ -1,21 +1,28 @@
 package com.harran.oturum.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
-
-public class UserAuthority {
+@Data
+@Entity
+@Table(name="logs_update")
+public class LogUpdate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String title;
-    private String description;
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")  // foreign key
-    private User user;
-    @ManyToOne
-    @JoinColumn(name = "authority_id", referencedColumnName = "id")  // foreign key
-    private Authority authority;
+    private String content;
+    private String method;
+    private String url;
+    private String ip;
+    private String userAgent;
+    private String referer;
+    private String refererHost;
+    private String refererPort;
+    private String refererUserAgent;
+    private String oldVeriable;
+    private String newVeriable;
 
     //Standart bilgiler
     @ManyToOne
