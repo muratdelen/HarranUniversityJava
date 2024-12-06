@@ -12,20 +12,23 @@ public class GroupService {
     @Autowired
     private MyUserDetailsService myUserDetailsService;
     public Iterable<Group> getAllGroups() {
-        return groupRepo.findAll();
+        return groupRepo.findByIsActiveTrue();
     }
-    public Group getGroupById(int id) {
-        return groupRepo.findById(id);
+    public Group getGroupById(long id) {
+        return groupRepo.findByIdAndIsActiveTrue(id);
+    }
+    public Iterable<Group> getGroupsByName(String name, String description) {
+        return groupRepo.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndIsActiveTrue(name, description);
     }
     public Group createGroup(Group group) {
         group.setCratedByUser(myUserDetailsService.logedUser);
         return groupRepo.save(group);
     }
-    public Group updateGroup(Group old_grup, Group new_group) {
-        old_grup.setUpdatedByUser(myUserDetailsService.logedUser);
-        old_grup.setName(new_group.getName());
-        old_grup.setDescription(new_group.getDescription());
-        return groupRepo.save(old_grup);
+    public Group updateGroup(Group old_group, Group new_group) {
+        old_group.setUpdatedByUser(myUserDetailsService.logedUser);
+        old_group.setName(new_group.getName());
+        old_group.setDescription(new_group.getDescription());
+        return groupRepo.save(old_group);
     }
     public Group deleteGroup(Group old_group) {
             old_group.setDeletedByUser(myUserDetailsService.logedUser);
