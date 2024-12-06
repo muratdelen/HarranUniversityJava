@@ -3,6 +3,7 @@ package com.harran.oturum.model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -10,8 +11,8 @@ import java.util.Collections;
 public class UserPrincipal  implements UserDetails {
 
     private static final long serialVersionUID = 1L;
-    private User user;
-    public UserPrincipal(User user) {this.user = user;}
+    public User logedUser;
+    public UserPrincipal(User user) {this.logedUser = user;}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -22,13 +23,13 @@ public class UserPrincipal  implements UserDetails {
     @Override
     public String getPassword() {
 
-        return user.getPassword();
+        return logedUser.getPassword();
     }
 
     @Override
     public String getUsername() {
 
-        return user.getUsername();
+        return logedUser.getUsername();
     }
 
     @Override

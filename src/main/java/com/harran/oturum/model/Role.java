@@ -22,6 +22,9 @@ public class Role {
     @ManyToOne
     @JoinColumn(name = "updated_by_user_id", referencedColumnName = "id") // foreign key
     private User updatedByUser;
+    @ManyToOne
+    @JoinColumn(name = "deleted_by_user_id", referencedColumnName = "id") // foreign key
+    private User deletedByUser;
     @Column(name = "created", nullable = false, updatable = false)
     private LocalDateTime created;
     @Column(name = "modified")
@@ -35,5 +38,5 @@ public class Role {
     protected void onUpdate() {
         modified = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-    private boolean is_active = true;
+    private boolean isActive = true;
 }

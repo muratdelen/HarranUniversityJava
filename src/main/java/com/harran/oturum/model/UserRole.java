@@ -22,6 +22,7 @@ public class UserRole {
     @JoinColumn(name = "role_id", referencedColumnName = "id")  // foreign key
     private Role role;
 
+
     //Standart bilgiler
     @ManyToOne
     @JoinColumn(name = "crated_by_user_id", referencedColumnName = "id")// foreign key
@@ -29,6 +30,9 @@ public class UserRole {
     @ManyToOne
     @JoinColumn(name = "updated_by_user_id", referencedColumnName = "id") // foreign key
     private User updatedByUser;
+    @ManyToOne
+    @JoinColumn(name = "deleted_by_user_id", referencedColumnName = "id") // foreign key
+    private User deletedByUser;
     @Column(name = "created", nullable = false, updatable = false)
     private LocalDateTime created;
     @Column(name = "modified")
@@ -42,5 +46,5 @@ public class UserRole {
     protected void onUpdate() {
         modified = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-    private boolean is_active = true;
+    private boolean isActive = true;
 }

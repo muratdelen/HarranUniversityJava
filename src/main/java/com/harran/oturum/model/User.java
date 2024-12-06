@@ -44,6 +44,6 @@ public class User {
     protected void onUpdate() {
         modified = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-    private boolean is_active = true;
+    private boolean isActive = true;
 
 }
