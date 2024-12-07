@@ -32,11 +32,11 @@ public class Group {
     protected void onCreate() {
         created = LocalDateTime.now(); // Set the creation time when the entity is saved
         modified = LocalDateTime.now(); // Initialize updatedAt as well
-        isActive = true;
+        active = true;
     }
     @PreUpdate
     protected void onUpdate() {
         modified = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-    private boolean isActive;
+    private boolean active;
 }

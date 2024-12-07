@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 public interface GroupRepo extends CrudRepository<Group, Long> {
-    List<Group> findByIsActiveTrue(); // isActive alanı true olanları getirir
-    List<Group> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndIsActiveTrue(String name, String description); // İsme göre arama yapar
-    Group findByIdAndIsActiveTrue(long id);
+    List<Group> findByActiveTrue(); // isActive alanı true olanları getirir
+    List<Group> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndActiveTrue(String name, String description); // İsme göre arama yapar
+    Group findByIdAndActiveTrue(long id);
 }

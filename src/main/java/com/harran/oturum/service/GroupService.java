@@ -12,13 +12,13 @@ public class GroupService {
     @Autowired
     private MyUserDetailsService myUserDetailsService;
     public Iterable<Group> getAllGroups() {
-        return groupRepo.findByIsActiveTrue();
+        return groupRepo.findByActiveTrue();
     }
     public Group getGroupById(long id) {
-        return groupRepo.findByIdAndIsActiveTrue(id);
+        return groupRepo.findByIdAndActiveTrue(id);
     }
     public Iterable<Group> getGroupsByName(String name, String description) {
-        return groupRepo.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndIsActiveTrue(name, description);
+        return groupRepo.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndActiveTrue(name, description);
     }
     public Group createGroup(Group group) {
         group.setCratedByUser(myUserDetailsService.logedUser);
