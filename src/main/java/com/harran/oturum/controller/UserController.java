@@ -1,8 +1,8 @@
 package com.harran.oturum.controller;
 
-import com.harran.oturum.model.User;
-import com.harran.oturum.service.JwtService;
-import com.harran.oturum.service.UserService;
+import com.harran.oturum.model.authority.User;
+import com.harran.oturum.service.oauth.JwtService;
+import com.harran.oturum.service.oauth.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

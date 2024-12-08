@@ -1,9 +1,8 @@
-package com.harran.oturum.model;
+package com.harran.oturum.model.authority;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -22,13 +21,11 @@ public class UserPrincipal  implements UserDetails {
 
     @Override
     public String getPassword() {
-
         return logedUser.getPassword();
     }
 
     @Override
     public String getUsername() {
-
         return logedUser.getUsername();
     }
 

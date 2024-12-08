@@ -1,25 +1,30 @@
-package com.harran.oturum.model;
+package com.harran.oturum.model.authority;
 
-import com.harran.oturum.model.authority.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+
 @Data
 @Entity
-@Table(name = "menus")
-public class Menu {
+@Table(name="role_permissions")
+public class RolePermission {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long parentId;
-    private String name;
-    private String url;
-    private String icon;
+    private int id;
+    private String title;
     private String description;
-    private String category;
-    private String type;
-    private String status;
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")  // foreign key
+    private Role role;
+    @ManyToOne
+    @JoinColumn(name = "page_url_id", referencedColumnName = "id")  // foreign key
+    private PageUrl pageUrl;
+    @ManyToOne
+    @JoinColumn(name = "permission_id", referencedColumnName = "id")  // foreign key
+    private Permission permission;
+
     //Standart bilgiler
     @ManyToOne
     @JoinColumn(name = "crated_by_user_id", referencedColumnName = "id")// foreign key
@@ -35,31 +40,25 @@ public class Menu {
     @Column(name = "updateAt")
     private LocalDateTime updateAt;
     private boolean active;
-
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now(); // Set the creation time when the entity is saved
         updateAt = LocalDateTime.now(); // Initialize updatedAt as well
         active = true;
     }
-
     @PreUpdate
     protected void onUpdate() {
         updateAt = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-
-    public Menu() {
+    public RolePermission() {
         this.active = true;
     }
-    public Menu(String name, String url, String description, String icon, Long parentId, String category, String type, String status) {
-        this.name = name;
+    public RolePermission(String title, String description, Role role, PageUrl pageUrl, Permission permission) {
+        this.title = title;
         this.description = description;
-        this.icon = icon;
-        this.parentId = parentId;
-        this.category = category;
-        this.type = type;
-        this.status = status;
+        this.role = role;
+        this.pageUrl = pageUrl;
+        this.permission = permission;
         this.active = true;
     }
-
 }

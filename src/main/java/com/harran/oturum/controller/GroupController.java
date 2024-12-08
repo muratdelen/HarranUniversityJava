@@ -1,7 +1,7 @@
 package com.harran.oturum.controller;
 
-import com.harran.oturum.model.Group;
-import com.harran.oturum.service.GroupService;
+import com.harran.oturum.model.authority.Group;
+import com.harran.oturum.service.authority.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

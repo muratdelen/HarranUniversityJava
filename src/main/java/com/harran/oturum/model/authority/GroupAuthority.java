@@ -1,4 +1,4 @@
-package com.harran.oturum.model;
+package com.harran.oturum.model.authority;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -19,7 +19,7 @@ public class GroupAuthority {
     private Group group;
     @ManyToOne
     @JoinColumn(name = "authority_id", referencedColumnName = "id")  // foreign key
-    private Authority authority;
+    private _Authority authority;
 
     //Standart bilgiler
     @ManyToOne
@@ -31,18 +31,27 @@ public class GroupAuthority {
     @ManyToOne
     @JoinColumn(name = "deleted_by_user_id", referencedColumnName = "id") // foreign key
     private User deletedByUser;
-    @Column(name = "created", nullable = false, updatable = false)
-    private LocalDateTime created;
-    @Column(name = "modified")
-    private LocalDateTime modified;
+    @Column(name = "createdAt", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+    @Column(name = "updateAt")
+    private LocalDateTime updateAt;
+    private boolean active;
     @PrePersist
     protected void onCreate() {
-        created = LocalDateTime.now(); // Set the creation time when the entity is saved
-        modified = LocalDateTime.now(); // Initialize updatedAt as well
+        createdAt = LocalDateTime.now(); // Set the creation time when the entity is saved
+        updateAt = LocalDateTime.now(); // Initialize updatedAt as well
+        active = true;
     }
     @PreUpdate
     protected void onUpdate() {
-        modified = LocalDateTime.now(); // Update this field whenever the entity is updated
+        updateAt = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-    private boolean isActive = true;
+    public GroupAuthority() {
+        this.active = true;
+    }
+    public GroupAuthority(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.active = true;
+    }
 }

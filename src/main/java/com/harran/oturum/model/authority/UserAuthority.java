@@ -1,26 +1,22 @@
-package com.harran.oturum.model;
+package com.harran.oturum.model.authority;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Data
-@Entity
-@Table(name="role_authorities")
-public class RoleAuthority {
-
+public class UserAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private String description;
     @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")  // foreign key
-    private Role role;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")  // foreign key
+    private User user;
     @ManyToOne
     @JoinColumn(name = "authority_id", referencedColumnName = "id")  // foreign key
-    private Authority authority;
+    private _Authority authority;
+
 
     //Standart bilgiler
     @ManyToOne
@@ -32,18 +28,18 @@ public class RoleAuthority {
     @ManyToOne
     @JoinColumn(name = "deleted_by_user_id", referencedColumnName = "id") // foreign key
     private User deletedByUser;
-    @Column(name = "created", nullable = false, updatable = false)
-    private LocalDateTime created;
-    @Column(name = "modified")
-    private LocalDateTime modified;
+    @Column(name = "createdAt", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+    @Column(name = "updateAt")
+    private LocalDateTime updateAt;
     @PrePersist
     protected void onCreate() {
-        created = LocalDateTime.now(); // Set the creation time when the entity is saved
-        modified = LocalDateTime.now(); // Initialize updatedAt as well
+        createdAt = LocalDateTime.now(); // Set the creation time when the entity is saved
+        updateAt = LocalDateTime.now(); // Initialize updatedAt as well
     }
     @PreUpdate
     protected void onUpdate() {
-        modified = LocalDateTime.now(); // Update this field whenever the entity is updated
+        updateAt = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-    private boolean isActive = true;
+    private boolean active = true;
 }

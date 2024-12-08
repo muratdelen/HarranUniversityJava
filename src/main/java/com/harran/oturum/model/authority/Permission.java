@@ -1,25 +1,20 @@
-package com.harran.oturum.model;
+package com.harran.oturum.model.authority;
 
-import com.harran.oturum.model.authority.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+
 @Data
 @Entity
-@Table(name = "menus")
-public class Menu {
+@Table(name="permissions")
+public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long parentId;
+    private long id;
     private String name;
-    private String url;
-    private String icon;
     private String description;
-    private String category;
-    private String type;
-    private String status;
+
     //Standart bilgiler
     @ManyToOne
     @JoinColumn(name = "crated_by_user_id", referencedColumnName = "id")// foreign key
@@ -35,31 +30,22 @@ public class Menu {
     @Column(name = "updateAt")
     private LocalDateTime updateAt;
     private boolean active;
-
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now(); // Set the creation time when the entity is saved
         updateAt = LocalDateTime.now(); // Initialize updatedAt as well
         active = true;
     }
-
     @PreUpdate
     protected void onUpdate() {
         updateAt = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-
-    public Menu() {
+    public Permission() {
         this.active = true;
     }
-    public Menu(String name, String url, String description, String icon, Long parentId, String category, String type, String status) {
+    public Permission(String name, String description) {
         this.name = name;
         this.description = description;
-        this.icon = icon;
-        this.parentId = parentId;
-        this.category = category;
-        this.type = type;
-        this.status = status;
         this.active = true;
     }
-
 }

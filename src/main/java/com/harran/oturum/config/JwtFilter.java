@@ -1,7 +1,7 @@
 package com.harran.oturum.config;
 
-import com.harran.oturum.service.JwtService;
-import com.harran.oturum.service.MyUserDetailsService;
+import com.harran.oturum.service.oauth.JwtService;
+import com.harran.oturum.service.oauth.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(userName != null && SecurityContextHolder.getContext().getAuthentication()==null){
 
-            UserDetails userDetails = context.getBean(MyUserDetailsService.class).loadUserByUsername(userName);
+            UserDetails userDetails = context.getBean(CustomUserDetailsService.class).loadUserByUsername(userName);
 
             if(jwtService.validateToken(token, userDetails)){
                 UsernamePasswordAuthenticationToken authToken =

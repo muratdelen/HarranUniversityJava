@@ -1,7 +1,8 @@
-package com.harran.oturum.service;
+package com.harran.oturum.service.authority;
 
 import com.harran.oturum.dao.GroupRepo;
-import com.harran.oturum.model.Group;
+import com.harran.oturum.model.authority.Group;
+import com.harran.oturum.service.oauth.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ public class GroupService {
     @Autowired
     private GroupRepo groupRepo;
     @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private CustomUserDetailsService customUserDetailsService;
     public Iterable<Group> getAllGroups() {
         return groupRepo.findByActiveTrue();
     }
@@ -21,17 +22,17 @@ public class GroupService {
         return groupRepo.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndActiveTrue(name, description);
     }
     public Group createGroup(Group group) {
-        group.setCratedByUser(myUserDetailsService.logedUser);
+        group.setCratedByUser(customUserDetailsService.logedUser);
         return groupRepo.save(group);
     }
     public Group updateGroup(Group old_group, Group new_group) {
-        old_group.setUpdatedByUser(myUserDetailsService.logedUser);
+        old_group.setUpdatedByUser(customUserDetailsService.logedUser);
         old_group.setName(new_group.getName());
         old_group.setDescription(new_group.getDescription());
         return groupRepo.save(old_group);
     }
     public Group deleteGroup(Group old_group) {
-            old_group.setDeletedByUser(myUserDetailsService.logedUser);
+            old_group.setDeletedByUser(customUserDetailsService.logedUser);
             old_group.setActive(false);
             return groupRepo.save(old_group);
     }

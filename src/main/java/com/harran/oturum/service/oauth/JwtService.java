@@ -1,4 +1,4 @@
-package com.harran.oturum.service;
+package com.harran.oturum.service.oauth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,4 +1,4 @@
-package com.harran.oturum.service;
+package com.harran.oturum.service.oauth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,11 +9,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.harran.oturum.dao.UserRepo;
-import com.harran.oturum.model.User;
-import com.harran.oturum.model.UserPrincipal;
+import com.harran.oturum.model.authority.User;
+import com.harran.oturum.model.authority.UserPrincipal;
 
 @Service
-public class MyUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepo repo;
