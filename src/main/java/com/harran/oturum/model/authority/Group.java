@@ -48,7 +48,6 @@ public class Group {
     public Group(String name, String description) {
         this.name = name;
         this.description = description;
-        this.active = true;
     }
 }
 

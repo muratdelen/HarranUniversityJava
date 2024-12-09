@@ -6,13 +6,20 @@ import lombok.Data;
 import java.time.LocalDateTime;
 @Data
 @Entity
-@Table(name="_authorities")
-public class _Authority {
+@Table(name="user_permissions")
+public class UserPermission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
+    private int id;
+    private String title;
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")  // foreign key
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "permission_id", referencedColumnName = "id")  // foreign key
+    private Permission permission;
+    private boolean isAdd;
 
     //Standart bilgiler
     @ManyToOne
@@ -39,12 +46,15 @@ public class _Authority {
     protected void onUpdate() {
         updateAt = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-    public _Authority() {
-        this.active = true;
+    public UserPermission() {
+
     }
-    public _Authority(String name, String description) {
-        this.name = name;
+    public UserPermission(String title, String description, User user, Permission permission, boolean isAdd) {
+        this.title = title;
         this.description = description;
-        this.active = true;
+        this.user = user;
+        this.permission = permission;
+        this.isAdd = isAdd;
     }
+
 }

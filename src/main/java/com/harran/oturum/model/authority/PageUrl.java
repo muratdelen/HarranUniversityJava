@@ -54,6 +54,5 @@ public class PageUrl {
         this.application = application;
         this.url = url;
         this.method = method;
-        this.active = true;
     }
 }

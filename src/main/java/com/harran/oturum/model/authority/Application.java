@@ -56,6 +56,5 @@ public class Application {
         this.ip = ip;
         this.url = url;
         this.deletedByUser = deletedByUser;
-        this.active = true;
     }
 }

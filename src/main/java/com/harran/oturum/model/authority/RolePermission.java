@@ -59,6 +59,5 @@ public class RolePermission {
         this.role = role;
         this.pageUrl = pageUrl;
         this.permission = permission;
-        this.active = true;
     }
 }

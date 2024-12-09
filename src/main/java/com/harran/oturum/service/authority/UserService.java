@@ -1,6 +1,6 @@
-package com.harran.oturum.service.oauth;
+package com.harran.oturum.service.authority;
 
-import com.harran.oturum.dao.UserRepo;
+import com.harran.oturum.dao.authority.UserRepo;
 import com.harran.oturum.model.authority.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

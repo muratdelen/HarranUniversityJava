@@ -1,6 +1,6 @@
 package com.harran.oturum.init;
 
-import com.harran.oturum.dao.*;
+import com.harran.oturum.dao.authority.*;
 import com.harran.oturum.model.authority.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.annotation.Async;
@@ -24,12 +24,9 @@ public class DataInitializer implements CommandLineRunner {
     private final PermissionRepo permissionRepository;
     private final RoleRepo roleRepository;
     private final RolePermissionRepo rolePermissionRepository;
+    private final UserGroupRepo userGroupRepository;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-    private final List<User> users = Arrays.asList(
-            new User("muratdelen",encoder.encode("1234"),"Murat","DELEN","muratdelen@harran.edu.tr")
-    );
     private final List<Group> groups = Arrays.asList(
             new Group("Developer","Geliştirici grubu"),
             new Group("SuperAdmin","Geliştirici dışında tüm yetkilere sahip grup(Loglama tam yetkili erişim)"),
@@ -89,6 +86,10 @@ public class DataInitializer implements CommandLineRunner {
             new Role("API_USER", "API uç noktalarına erişim hakkına sahip kullanıcı."),
             new Role("RESOURCE_MANAGER", "Belirli bir kaynağı veya modülü yönetme yetkisi.")
     );
+
+    private final List<User> users = Arrays.asList(
+            new User("muratdelen",encoder.encode("1234"),"Murat","DELEN","muratdelen@harran.edu.tr", groups.get(0))
+    );
     private final List<Application> applications = Arrays.asList(
             new Application("Kalite Yönetim Sistemi","açıklama", true, "193.168.1.1","//oturum.harran.edu.tr", users.get(0)),
             new Application("Geribildirim Sistemi", "Teşekkür, Takdir, Eleştiri, Talep, Dilek, İstek, Öneri, Şikayet", true, "193.168.1.1", "//geribildirim.harran.edu.tr", users.get(0)),
@@ -108,8 +109,12 @@ public class DataInitializer implements CommandLineRunner {
     private final List<RolePermission> rolePermissions = List.of(
             new RolePermission("Role yetkisi","açıklama",roles.get(3), pageUrls.get(0), permissions.get(1))
     );
+    private final List<UserGroup> userGroups = Arrays.asList(
+            new UserGroup("ikinci Grubu","1. birden fazla grup eklenebilir",users.get(0),groups.get(1)),
+            new UserGroup("Üçüncü Grubu","2. birden fazla grup eklenebilir",users.get(0),groups.get(2))
+    );
 
-    public DataInitializer(UserRepo userRepository, ApplicationRepo applicationRepository, PageUrlRepo pageUrlRepository, GroupRepo groupRepository, PermissionRepo permissionRepository, RoleRepo roleRepository, RolePermissionRepo rolePermissionRepository) {
+    public DataInitializer(UserRepo userRepository, ApplicationRepo applicationRepository, PageUrlRepo pageUrlRepository, GroupRepo groupRepository, PermissionRepo permissionRepository, RoleRepo roleRepository, RolePermissionRepo rolePermissionRepository, UserGroupRepo userGroupRepository) {
         this.userRepository = userRepository;
         this.applicationRepository = applicationRepository;
         this.pageUrlRepository = pageUrlRepository;
@@ -117,22 +122,11 @@ public class DataInitializer implements CommandLineRunner {
         this.permissionRepository = permissionRepository;
         this.roleRepository = roleRepository;
         this.rolePermissionRepository = rolePermissionRepository;
+        this.userGroupRepository = userGroupRepository;
     }
-
-    @Async
-    public CompletableFuture<Void> initializeUsers() {
-        if (userRepository.count() == 0) {
-            userRepository.saveAll(users);
-        }
-        return CompletableFuture.completedFuture(null);
-    }
-    @Async
-    public CompletableFuture<Void> initializeApplications() {
-        if (applicationRepository.count() == 0) {
-            applicationRepository.saveAll(applications);
-        }
-        return CompletableFuture.completedFuture(null);
-    }
+    /*
+    asenktron fonksiyonlar tanımlanıyor. bu fonksiyon içerisinde tanımlananlar işlem bitene kadar uygulama bekletiliyor.
+     */
     @Async
     public CompletableFuture<Void> initializeGroups() {
         if (groupRepository.count() == 0) {
@@ -155,6 +149,20 @@ public class DataInitializer implements CommandLineRunner {
         return CompletableFuture.completedFuture(null);
     }
     @Async
+    public CompletableFuture<Void> initializeUsers() {
+        if (userRepository.count() == 0) {
+            userRepository.saveAll(users);
+        }
+        return CompletableFuture.completedFuture(null);
+    }
+    @Async
+    public CompletableFuture<Void> initializeApplications() {
+        if (applicationRepository.count() == 0) {
+            applicationRepository.saveAll(applications);
+        }
+        return CompletableFuture.completedFuture(null);
+    }
+    @Async
     public CompletableFuture<Void> initializeRolePermissions() {
         if (rolePermissionRepository.count() == 0) {
             rolePermissionRepository.saveAll(rolePermissions);
@@ -168,14 +176,22 @@ public class DataInitializer implements CommandLineRunner {
         }
         return CompletableFuture.completedFuture(null);
     }
+    @Async
+    public CompletableFuture<Void> initializeUserGroups() {
+        if (userGroupRepository.count() == 0) {
+            userGroupRepository.saveAll(userGroups);
+        }
+        return CompletableFuture.completedFuture(null);
+    }
     /*
     Veritabanına ilk verileri girmesini sağlar
      */
     @Override
     public void run(String... args) throws Exception {
-
-        //Veritabanına ilk kullanıcılar ekleniyor
-        initializeUsers().join();
+        /*
+           Roller ve Yetkileri Tanımlanıyor.
+           aşağıdaki sıraya göre sırasıyla işlem bittiğinde diğer işlem başlıyor.
+         */
 
         //Veritabanına ilk grup bilgisini ekler
         initializeGroups().join();
@@ -186,6 +202,12 @@ public class DataInitializer implements CommandLineRunner {
         //Veritabanına ilk roller ekleniyor
         initializeRoles().join();
 
+        //Veritabanına ilk kullanıcılar ekleniyor
+        initializeUsers().join();
+
+        //Kullanıcı Diğer Grupları
+        initializeUserGroups().join();
+
         // veritabanına ilk uygulamalar ekler
         initializeApplications().join();
 
@@ -194,6 +216,11 @@ public class DataInitializer implements CommandLineRunner {
 
         //Role ait izinleri veritabanına kaydediyor
         initializeRolePermissions().join();
+
+        /*
+
+         */
+
 
     }
 }

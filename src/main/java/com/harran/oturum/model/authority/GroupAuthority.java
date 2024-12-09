@@ -52,6 +52,5 @@ public class GroupAuthority {
     public GroupAuthority(String title, String description) {
         this.title = title;
         this.description = description;
-        this.active = true;
     }
 }

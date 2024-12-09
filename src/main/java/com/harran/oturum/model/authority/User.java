@@ -51,12 +51,13 @@ public class User {
     public User(){
         this.active = true;
     }
-    public User(String username, String password, String firstName, String lastName, String email) {
+    public User(String username, String password, String firstName, String lastName, String email, Group group) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.group = group;
     }
 //    public Collection<Role> getRoles() {
 //        return new Role("ROLE_USER");

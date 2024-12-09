@@ -7,13 +7,19 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name="permissions")
-public class Permission {
+@Table(name="user_groups")
+public class UserGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
+    private int id;
+    private String title;
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")  // foreign key
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "id")  // foreign key
+    private Group group;
 
     //Standart bilgiler
     @ManyToOne
@@ -40,11 +46,13 @@ public class Permission {
     protected void onUpdate() {
         updateAt = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-    public Permission() {
+    public UserGroup() {
         this.active = true;
     }
-    public Permission(String name, String description) {
-        this.name = name;
+    public UserGroup(String title, String description, User user, Group group) {
+        this.title = title;
         this.description = description;
+        this.user = user;
+        this.group = group;
     }
 }

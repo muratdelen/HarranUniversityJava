@@ -1,22 +1,26 @@
 package com.harran.oturum.model.authority;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-public class UserAuthority {
+@Data
+@Entity
+@Table(name="group_roles")
+public class GroupRole {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private String description;
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")  // foreign key
-    private User user;
+    @JoinColumn(name = "group_id", referencedColumnName = "id")  // foreign key
+    private Group group;
     @ManyToOne
-    @JoinColumn(name = "authority_id", referencedColumnName = "id")  // foreign key
-    private _Authority authority;
-
+    @JoinColumn(name = "role_id", referencedColumnName = "id")  // foreign key
+    private Role role;
 
     //Standart bilgiler
     @ManyToOne
@@ -32,14 +36,24 @@ public class UserAuthority {
     private LocalDateTime createdAt;
     @Column(name = "updateAt")
     private LocalDateTime updateAt;
+    private boolean active;
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now(); // Set the creation time when the entity is saved
         updateAt = LocalDateTime.now(); // Initialize updatedAt as well
+        active = true;
     }
     @PreUpdate
     protected void onUpdate() {
         updateAt = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
-    private boolean active = true;
+    public GroupRole() {
+        this.active = true;
+    }
+    public GroupRole(String title, String description, Group group, Role role) {
+        this.title = title;
+        this.description = description;
+        this.group = group;
+        this.role = role;
+    }
 }

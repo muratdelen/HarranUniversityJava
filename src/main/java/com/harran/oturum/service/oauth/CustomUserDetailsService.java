@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.harran.oturum.dao.UserRepo;
+import com.harran.oturum.dao.authority.UserRepo;
 import com.harran.oturum.model.authority.User;
 import com.harran.oturum.model.authority.UserPrincipal;
 

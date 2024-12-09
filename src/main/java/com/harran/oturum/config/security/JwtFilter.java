@@ -1,4 +1,4 @@
-package com.harran.oturum.config;
+package com.harran.oturum.config.security;
 
 import com.harran.oturum.service.oauth.JwtService;
 import com.harran.oturum.service.oauth.CustomUserDetailsService;

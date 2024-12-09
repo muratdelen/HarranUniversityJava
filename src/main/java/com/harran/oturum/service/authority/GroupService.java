@@ -1,6 +1,6 @@
 package com.harran.oturum.service.authority;
 
-import com.harran.oturum.dao.GroupRepo;
+import com.harran.oturum.dao.authority.GroupRepo;
 import com.harran.oturum.model.authority.Group;
 import com.harran.oturum.service.oauth.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

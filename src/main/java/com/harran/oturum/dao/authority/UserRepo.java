@@ -1,4 +1,4 @@
-package com.harran.oturum.dao;
+package com.harran.oturum.dao.authority;
 
 import com.harran.oturum.model.authority.User;
 import org.springframework.data.repository.CrudRepository;
