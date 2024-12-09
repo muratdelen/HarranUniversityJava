@@ -19,7 +19,7 @@ public class UserPermission {
     @ManyToOne
     @JoinColumn(name = "permission_id", referencedColumnName = "id")  // foreign key
     private Permission permission;
-    private boolean isAdd;
+    private boolean add;
 
     //Standart bilgiler
     @ManyToOne
@@ -54,7 +54,7 @@ public class UserPermission {
         this.description = description;
         this.user = user;
         this.permission = permission;
-        this.isAdd = isAdd;
+        this.add = isAdd;
     }
 
 }
