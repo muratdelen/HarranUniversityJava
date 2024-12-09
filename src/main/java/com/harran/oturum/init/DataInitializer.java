@@ -187,7 +187,7 @@ public class DataInitializer implements CommandLineRunner {
      */
     @Override
     public void run(String... args) throws Exception {
-/*
+
         //Veritabanına ilk kullanıcılar ekleniyor
         initializeUsers().join();
 
@@ -209,6 +209,5 @@ public class DataInitializer implements CommandLineRunner {
         //Role ait izinleri veritabanına kaydediyor
         initializeRolePermissions().join();
 
- */
     }
 }
