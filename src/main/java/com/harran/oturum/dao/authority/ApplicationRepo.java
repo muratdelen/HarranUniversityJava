@@ -10,6 +10,6 @@ import java.util.List;
 public interface ApplicationRepo extends CrudRepository<Application, Long> {
     List<Application> findByActiveTrue(); // isActive alanı true olanları getirir
     Application findByIdAndActiveTrue(long id);
-    List<Application> findByNameAndActiveTrue(String name);
+    Application findByNameAndActiveTrue(String name);
     List<Application> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndActiveTrue(String name, String description); // İsme göre arama yapar
 }

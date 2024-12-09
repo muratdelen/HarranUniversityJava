@@ -10,7 +10,7 @@ import java.util.List;
 public interface GroupRoleRepo extends CrudRepository<GroupRole, Long> {
     List<GroupRole> findByActiveTrue(); // isActive alanı true olanları getirir
     GroupRole findByIdAndActiveTrue(long id);
-    List<GroupRole> findByGroupIdAndActiveTrue(long userId);
+    List<GroupRole> findByApplicationAndGroupIdAndActiveTrue(long applicationId,long groupId );
     List<GroupRole> findByTitleAndActiveTrue(String name);
     List<GroupRole> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndActiveTrue(String name, String description); // İsme göre arama yapar
 }

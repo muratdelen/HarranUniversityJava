@@ -10,6 +10,7 @@ import java.util.List;
 public interface PageUrlRepo extends CrudRepository<PageUrl, Long> {
     List<PageUrl> findByActiveTrue(); // isActive alanı true olanları getirir
     PageUrl findByIdAndActiveTrue(long id);
+    PageUrl findByApplicationIdAndUrlAndActiveTrue(long id, String url);
     List<PageUrl> findByNameAndActiveTrue(String name);
     List<PageUrl> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndActiveTrue(String name, String description); // İsme göre arama yapar
 }

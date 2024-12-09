@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserRoleRepo extends CrudRepository<UserRole, Long> {
     List<UserRole> findByActiveTrue(); // isActive alanı true olanları getirir
     UserRole findByIdAndActiveTrue(long id);
-    List<UserRole> findByUserIdAndActiveTrue(long userId);
+    List<UserRole> findByApplicationAndUserIdAndActiveTrue(long applicationId, long userId);
     List<UserRole> findByTitleAndActiveTrue(String name);
     List<UserRole> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndActiveTrue(String name, String description); // İsme göre arama yapar
 }
