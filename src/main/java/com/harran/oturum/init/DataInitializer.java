@@ -2,13 +2,11 @@ package com.harran.oturum.init;
 
 import com.harran.oturum.dao.*;
 import com.harran.oturum.model.authority.*;
-import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -107,9 +105,8 @@ public class DataInitializer implements CommandLineRunner {
             new PageUrl("Kalite Anasayfası", "HU Kalite uygulaması anasayfası", applications.get(0),"/","GET"),
             new PageUrl("Geri Bildirim Anasayfası", "HU Geri Bildirim uygulaması anasayfası", applications.get(1),"/","GET")
     );
-    private List<RolePermission> rolePermissions = List.of(
-            new RolePermission("Role yetkisi","açıklama",roles.get(3), pageUrls.get(0),(Permission) permissions.get(1))
-            //new RoleAuthority("","",(Role)roleRepository.findByNameAndActiveTrue("GUEST"),(PageUrl) pageUrlRepository.findByNameAndActiveTrue("Kalite Anasayfası"),(Permission) permissionRepository.findByNameAndActiveTrue("CONTENT_READ"))
+    private final List<RolePermission> rolePermissions = List.of(
+            new RolePermission("Role yetkisi","açıklama",roles.get(3), pageUrls.get(0), permissions.get(1))
     );
 
     public DataInitializer(UserRepo userRepository, ApplicationRepo applicationRepository, PageUrlRepo pageUrlRepository, GroupRepo groupRepository, PermissionRepo permissionRepository, RoleRepo roleRepository, RolePermissionRepo rolePermissionRepository) {
@@ -120,17 +117,6 @@ public class DataInitializer implements CommandLineRunner {
         this.permissionRepository = permissionRepository;
         this.roleRepository = roleRepository;
         this.rolePermissionRepository = rolePermissionRepository;
-    }
-    @Transactional
-    public void initializeData() {
-        // Tüm başlatma işlemleri buraya eklenir
-        initializeUsers();
-        initializeGroups();
-        initializePermissions();
-        initializeRoles();
-        initializeApplications();
-        initializePageUrls();
-        initializeRolePermissions();
     }
 
     @Async
