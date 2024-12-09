@@ -52,4 +52,13 @@ public class LogLogin {
     public LogLogin() {
         this.active = true;
     }
+    public LogLogin(String method, String url, String ip, String userAgent) {
+        this.method = method;
+        this.url = url;
+        this.ip = ip;
+        this.userAgent = userAgent;
+        this.referer = ip + ":" + userAgent;
+        this.refererHost = ip + ":" + userAgent;
+        this.refererPort = ip + ":" + userAgent;
+    }
 }
