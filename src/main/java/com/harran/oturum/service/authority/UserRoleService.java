@@ -19,7 +19,7 @@ public class UserRoleService {
         return userRoleRepo.findByIdAndActiveTrue(id);
     }
     public Iterable<UserRole> getUserRolesByUserId(long userId) {
-        return userRoleRepo.findByApplicationAndUserIdAndActiveTrue(userId);
+        return userRoleRepo.findByUserIdAndActiveTrue(userId);
     }
     public Iterable<UserRole> getUserRolesByTitle(String title, String description) {
         return userRoleRepo.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndActiveTrue(title, description);

@@ -107,7 +107,7 @@ public class DataInitializer implements CommandLineRunner {
             new PageUrl("Geri Bildirim Anasayfası", "HU Geri Bildirim uygulaması anasayfası", applications.get(1),"/","GET")
     );
     private final List<RolePermission> rolePermissions = List.of(
-            new RolePermission("Role yetkisi","açıklama",roles.get(3), pageUrls.get(0), permissions.get(1))
+            new RolePermission("Role yetkisi","açıklama",applications.get(0), roles.get(3), pageUrls.get(0), permissions.get(1))
     );
     private final List<UserGroup> userGroups = Arrays.asList(
             new UserGroup("ikinci Grubu","1. birden fazla grup eklenebilir",users.get(0),groups.get(1)),

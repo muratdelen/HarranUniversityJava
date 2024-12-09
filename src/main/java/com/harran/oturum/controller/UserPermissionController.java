@@ -37,6 +37,7 @@ public class UserPermissionController
         UserPermission newUserPermission = new UserPermission();
         newUserPermission.setTitle(userPermission.getTitle());
         newUserPermission.setDescription(userPermission.getDescription());
+        newUserPermission.setApplication(userPermission.getApplication());
         newUserPermission.setUser(userPermission.getUser());
         newUserPermission.setPermission(userPermission.getPermission());
         newUserPermission.setAdd(userPermission.isAdd());

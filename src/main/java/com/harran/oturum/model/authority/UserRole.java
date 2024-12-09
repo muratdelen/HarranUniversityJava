@@ -16,9 +16,6 @@ public class UserRole {
     private String title;
     private String description;
     @ManyToOne
-    @JoinColumn(name = "application_id", referencedColumnName = "id")  // foreign key
-    private Application application;
-    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")  // foreign key
     private User user;
     @ManyToOne
@@ -53,10 +50,9 @@ public class UserRole {
     public UserRole() {
         this.active = true;
     }
-    public UserRole(String title, String description, Application application, User user, Role role) {
+    public UserRole(String title, String description, User user, Role role) {
         this.title = title;
         this.description = description;
-        this.application = application;
         this.user = user;
         this.role = role;
     }

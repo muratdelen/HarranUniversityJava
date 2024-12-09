@@ -14,6 +14,9 @@ public class UserPermission {
     private String title;
     private String description;
     @ManyToOne
+    @JoinColumn(name = "application_id", referencedColumnName = "id")  // foreign key
+    private Application application;
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")  // foreign key
     private User user;
     @ManyToOne
@@ -47,11 +50,12 @@ public class UserPermission {
         updateAt = LocalDateTime.now(); // Update this field whenever the entity is updated
     }
     public UserPermission() {
-
+        active = true;
     }
-    public UserPermission(String title, String description, User user, Permission permission, boolean isAdd) {
+    public UserPermission(String title, String description, Application application, User user, Permission permission, boolean isAdd) {
         this.title = title;
         this.description = description;
+        this.application = application;
         this.user = user;
         this.permission = permission;
         this.add = isAdd;

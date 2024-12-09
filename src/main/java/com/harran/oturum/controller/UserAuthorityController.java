@@ -1,11 +1,15 @@
 package com.harran.oturum.controller;
 
+import com.harran.oturum.model.authority.Permission;
+import com.harran.oturum.service.oauth.UserAuthority;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
 @RestController
-public class HelloController {
+public class UserAuthorityController {
 
     @GetMapping("/")
     public String hello() {
@@ -23,5 +27,10 @@ public class HelloController {
     @GetMapping("csrf-token")
     public CsrfToken getCsrfToken(HttpServletRequest request) {
         return (CsrfToken) request.getAttribute("_csrf");
+    }
+    @GetMapping("userPermission/{username}/{applicationName}/{pageUrl}")
+    public Iterable<Permission> getUserPermissions(@PathVariable("username") String username, @PathVariable("applicationName") String applicationName, @PathVariable("pageUrl") String pageUrl ) {
+        UserAuthority userAuthority = new UserAuthority();
+        return userAuthority.getUserPermissions(username,applicationName,pageUrl);
     }
 }

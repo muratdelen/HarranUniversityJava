@@ -21,8 +21,8 @@ public class UserPermissionService {
     public Iterable<UserPermission> getUserPermissionsByUserId(long userId) {
         return userPermissionRepo.findByUserIdAndActiveTrue(userId);
     }
-    public Iterable<UserPermission> findByUserIdAndAddAndActiveTrue(long userId, boolean add) {
-        return userPermissionRepo.findByUserIdAndAddAndActiveTrue(userId, add);
+    public Iterable<UserPermission> findByApplicationAndUserIdAndAddAndActiveTrue(long applicationId, long userId, boolean add) {
+        return userPermissionRepo.findByApplicationIdAndUserIdAndAddAndActiveTrue(applicationId, userId, add);
     }
     public Iterable<UserPermission> getUserPermissionsByTitle(String title, String description) {
         return userPermissionRepo.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndActiveTrue(title, description);

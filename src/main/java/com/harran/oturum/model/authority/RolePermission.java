@@ -16,6 +16,9 @@ public class RolePermission {
     private String title;
     private String description;
     @ManyToOne
+    @JoinColumn(name = "application_id", referencedColumnName = "id")  // foreign key
+    private Application application;
+    @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")  // foreign key
     private Role role;
     @ManyToOne
@@ -53,9 +56,10 @@ public class RolePermission {
     public RolePermission() {
         this.active = true;
     }
-    public RolePermission(String title, String description, Role role, PageUrl pageUrl, Permission permission) {
+    public RolePermission(String title, String description, Application application, Role role, PageUrl pageUrl, Permission permission) {
         this.title = title;
         this.description = description;
+        this.application = application;
         this.role = role;
         this.pageUrl = pageUrl;
         this.permission = permission;

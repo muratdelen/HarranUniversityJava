@@ -14,4 +14,5 @@ public interface UserPermissionRepo extends CrudRepository<UserPermission, Long>
     List<UserPermission> findByUserIdAndActiveTrue(long userId);
     List<UserPermission> findByTitleAndActiveTrue(String name);
     List<UserPermission> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndActiveTrue(String name, String description); // İsme göre arama yapar
+    Iterable<UserPermission> findByApplicationIdAndUserIdAndAddAndActiveTrue(long applicationId, long userId, boolean add);
 }
