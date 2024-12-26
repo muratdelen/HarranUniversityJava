@@ -17,6 +17,9 @@ public class PageUrl {
     @ManyToOne
     @JoinColumn(name = "application_id", referencedColumnName = "id")// foreign key
     private Application application;
+    @ManyToOne
+    @JoinColumn(name = "menu_id", referencedColumnName = "id")// foreign key
+    private Menu menu;
     private String url;
     private String method;
 
@@ -48,10 +51,11 @@ public class PageUrl {
     public PageUrl() {
         this.active = true;
     }
-    public PageUrl(String name, String description, Application application, String url, String method) {
+    public PageUrl(String name, String description, Application application, Menu menu, String url, String method) {
         this.name = name;
         this.description = description;
         this.application = application;
+        this.menu = menu;
         this.url = url;
         this.method = method;
     }

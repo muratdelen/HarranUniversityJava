@@ -19,12 +19,14 @@ public class DataInitializer implements CommandLineRunner {
 
     private final UserRepo userRepository;
     private final ApplicationRepo applicationRepository;
+    private final MenuRepo menuRepository;
     private final PageUrlRepo pageUrlRepository;
     private final GroupRepo groupRepository;
     private final PermissionRepo permissionRepository;
     private final RoleRepo roleRepository;
     private final RolePermissionRepo rolePermissionRepository;
     private final UserGroupRepo userGroupRepository;
+    private final GroupRoleRepo groupRoleRepository;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private final List<Group> groups = Arrays.asList(
@@ -91,7 +93,7 @@ public class DataInitializer implements CommandLineRunner {
             new User("muratdelen",encoder.encode("1234"),"Murat","DELEN","muratdelen@harran.edu.tr", groups.get(0))
     );
     private final List<Application> applications = Arrays.asList(
-            new Application("Kalite Yönetim Sistemi","açıklama", true, "193.168.1.1","//oturum.harran.edu.tr", users.get(0)),
+            new Application("KaliteYönetimSistemi","açıklama", true, "193.168.1.1","//oturum.harran.edu.tr", users.get(0)),
             new Application("Geribildirim Sistemi", "Teşekkür, Takdir, Eleştiri, Talep, Dilek, İstek, Öneri, Şikayet", true, "193.168.1.1", "//geribildirim.harran.edu.tr", users.get(0)),
             new Application("Seçim Sistemi", "Tüm seçimler buradan yapılmaktadır.", true, "193.168.1.1", "//secim.harran.edu.tr", users.get(0)),
             new Application("Yönetime Katılım Sistemi", "Yönetim kararlarına katılabilirsiniz.", true, "193.168.1.1", "//katilim.harran.edu.tr", users.get(0)),
@@ -101,32 +103,60 @@ public class DataInitializer implements CommandLineRunner {
             new Application("Veri Toplama Sistemi", "Tüm verileri buradan toplayabilirsiniz.", true, "193.168.1.1", "//verial.harran.edu.tr", users.get(0)),
             new Application("Veri Gösterme Sistemi", "Tüm verileri buradan yetkiniz dahilinde görebilirsiniz.", true, "193.168.1.1", "//verigoster.harran.edu.tr", users.get(0))
     );
-
+    private final List<Menu> menus = Arrays.asList(
+            new Menu(applications.get(0),"Home", "/home", "Home page", "home-icon.png", null, "General", "Link", "Active", "en", true),
+            new Menu(applications.get(0),"About Us", "/about", "Learn more about us", "about-icon.png", null, "Information", "Page", "Active", "en", true),
+            new Menu(applications.get(0),"Services", "/services", "Our services", "services-icon.png", null, "General", "Dropdown", "Active", "en", true),
+            new Menu(applications.get(0),"Contact", "/contact", "Get in touch with us", "contact-icon.png", null, "Information", "Page", "Active", "en", true),
+            new Menu(applications.get(0),"Dashboard", "/dashboard", "User dashboard", "dashboard-icon.png", 1L, "Admin", "Page", "Active", "en", false),
+            new Menu(applications.get(0),"Settings", "/settings", "User settings", "settings-icon.png", 1L, "Admin", "Page", "Inactive", "en", true),
+            new Menu(applications.get(0),"Help", "/help", "Help and support", "help-icon.png", null, "Support", "Page", "Active", "en", true),
+            new Menu(applications.get(0),"Logging", "/logging", "System logging", "logging-icon.png", null, "Admin", "Page", "Active", "en", true),
+            new Menu(applications.get(0),"Authorization", "/authorization", "Manage user permissions", "authorization-icon.png", 1L, "Admin", "Page", "Active", "en", true),
+            new Menu(applications.get(0),"Anasayfa", "/anasayfa", "Ana sayfa", "anasayfa-icon.png", null, "Genel", "Bağlantı", "Aktif", "tr", true),
+            new Menu(applications.get(0),"Hakkımızda", "/hakkimizda", "Hakkımızda daha fazla bilgi alın", "hakkimizda-icon.png", null, "Bilgi", "Sayfa", "Aktif", "tr", true),
+            new Menu(applications.get(0),"Hizmetlerimiz", "/hizmetlerimiz", "Hizmetlerimiz hakkında bilgi", "hizmetler-icon.png", null, "Genel", "Açılır Menü", "Aktif", "tr", true),
+            new Menu(applications.get(0),"İletişim", "/iletisim", "Bizimle iletişime geçin", "iletisim-icon.png", null, "Bilgi", "Sayfa", "Aktif", "tr", true),
+            new Menu(applications.get(0),"Loglama", "/loglama", "Sistem loglarını görüntüleme", "loglama-icon.png", null, "Yönetim", "Sayfa", "Aktif", "tr", true),
+            new Menu(applications.get(0),"Yetkilendirme", "/yetkilendirme", "Kullanıcı izinlerini yönetme", "yetkilendirme-icon.png", 1L, "Yönetim", "Sayfa", "Aktif", "tr", true)
+    );
     private final List<PageUrl> pageUrls = Arrays.asList(
-            new PageUrl("Kalite Anasayfası", "HU Kalite uygulaması anasayfası", applications.get(0),"/","GET"),
-            new PageUrl("Geri Bildirim Anasayfası", "HU Geri Bildirim uygulaması anasayfası", applications.get(1),"/","GET")
+            new PageUrl("Kalite Anasayfası", "HU Kalite uygulaması anasayfası", applications.get(0), menus.get(0),"kalite","GET"),
+            new PageUrl("Geri Bildirim Anasayfası", "HU Geri Bildirim uygulaması anasayfası", applications.get(0), menus.get(0),"/","GET")
     );
     private final List<RolePermission> rolePermissions = List.of(
-            new RolePermission("Role yetkisi","açıklama",applications.get(0), roles.get(3), pageUrls.get(0), permissions.get(1))
+            new RolePermission("Role yetkisi","açıklama",applications.get(0), roles.get(0), pageUrls.get(0), permissions.get(0))
     );
     private final List<UserGroup> userGroups = Arrays.asList(
             new UserGroup("ikinci Grubu","1. birden fazla grup eklenebilir",users.get(0),groups.get(1)),
             new UserGroup("Üçüncü Grubu","2. birden fazla grup eklenebilir",users.get(0),groups.get(2))
     );
+    private final List<GroupRole> groupRoles = Arrays.asList(
+            new GroupRole("1. grup rolü","açıklama",groups.get(0),roles.get(0))
+    );
 
-    public DataInitializer(UserRepo userRepository, ApplicationRepo applicationRepository, PageUrlRepo pageUrlRepository, GroupRepo groupRepository, PermissionRepo permissionRepository, RoleRepo roleRepository, RolePermissionRepo rolePermissionRepository, UserGroupRepo userGroupRepository) {
+    public DataInitializer(UserRepo userRepository, ApplicationRepo applicationRepository, MenuRepo menuRepository, PageUrlRepo pageUrlRepository, GroupRepo groupRepository, PermissionRepo permissionRepository, RoleRepo roleRepository, RolePermissionRepo rolePermissionRepository, UserGroupRepo userGroupRepository, UserGroupRepo groupGroupRepository, GroupRoleRepo groupRoleRepository) {
         this.userRepository = userRepository;
         this.applicationRepository = applicationRepository;
+        this.menuRepository = menuRepository;
         this.pageUrlRepository = pageUrlRepository;
         this.groupRepository = groupRepository;
         this.permissionRepository = permissionRepository;
         this.roleRepository = roleRepository;
         this.rolePermissionRepository = rolePermissionRepository;
         this.userGroupRepository = userGroupRepository;
+        this.groupRoleRepository = groupRoleRepository;
     }
     /*
     asenktron fonksiyonlar tanımlanıyor. bu fonksiyon içerisinde tanımlananlar işlem bitene kadar uygulama bekletiliyor.
      */
+    @Async
+    public CompletableFuture<Void> initializeMenus() {
+        if (menuRepository.count() == 0) {
+            menuRepository.saveAll(menus);
+        }
+        return CompletableFuture.completedFuture(null);
+    }
     @Async
     public CompletableFuture<Void> initializeGroups() {
         if (groupRepository.count() == 0) {
@@ -183,6 +213,13 @@ public class DataInitializer implements CommandLineRunner {
         }
         return CompletableFuture.completedFuture(null);
     }
+    @Async
+    public CompletableFuture<Void> initializeGroupRoles() {
+        if (groupRoleRepository.count() == 0) {
+            groupRoleRepository.saveAll(groupRoles);
+        }
+        return CompletableFuture.completedFuture(null);
+    }
     /*
     Veritabanına ilk verileri girmesini sağlar
      */
@@ -211,12 +248,15 @@ public class DataInitializer implements CommandLineRunner {
         // veritabanına ilk uygulamalar ekler
         initializeApplications().join();
 
+        //Veritabanına ilk grup bilgisini ekler
+        initializeMenus().join();
         //Veritabanına uygulamalara ait ilk sayfalar yükleniyor
         initializePageUrls().join();
 
         //Role ait izinleri veritabanına kaydediyor
         initializeRolePermissions().join();
 
+        initializeGroupRoles().join();
         /*
 
          */

@@ -1,6 +1,5 @@
-package com.harran.oturum.model;
+package com.harran.oturum.model.authority;
 
-import com.harran.oturum.model.authority.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,6 +11,9 @@ public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "application_id", referencedColumnName = "id")// foreign key
+    private Application application;
     private Long parentId;
     private String name;
     private String url;
@@ -20,6 +22,8 @@ public class Menu {
     private String category;
     private String type;
     private String status;
+    private String language;
+    private boolean show;
     //Standart bilgiler
     @ManyToOne
     @JoinColumn(name = "crated_by_user_id", referencedColumnName = "id")// foreign key
@@ -51,7 +55,8 @@ public class Menu {
     public Menu() {
         this.active = true;
     }
-    public Menu(String name, String url, String description, String icon, Long parentId, String category, String type, String status) {
+    public Menu(Application application, String name, String url, String description, String icon, Long parentId, String category, String type, String status, String language, boolean show) {
+        this.application = application;
         this.name = name;
         this.description = description;
         this.icon = icon;
@@ -59,6 +64,8 @@ public class Menu {
         this.category = category;
         this.type = type;
         this.status = status;
+        this.language = language;
+        this.show = show;
         this.active = true;
     }
 

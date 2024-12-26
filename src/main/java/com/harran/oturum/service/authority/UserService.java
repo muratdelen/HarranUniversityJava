@@ -8,9 +8,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    public UserService(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
 
     //Kullanıcı kayıt olma servisi
     public User saveUser(User user) {
