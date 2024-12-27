@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -12,18 +13,17 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
 public class JwtService {
 
-    private static final String SECRET = "TmV3U2VjcmV0S2V5Rm9ySldUU2lnbmluZ1B1cnBvc2VzMTIzNDU2Nzg=\r\n";
+    private static final String SECRET = "TmV3U2VjcmV0S2V5Rm9ySldUU2lnbmluZ1B1cnBvc2VzMTIzNDU2Nzg=";
 
     private String secretKey;
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     public JwtService(){
         secretKey = generateSecretKey();
@@ -40,9 +40,25 @@ public class JwtService {
         }
     }
 
+    public String generateToken() {
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", customUserDetailsService.roles); // Roller eklendi
+        claims.put("email", customUserDetailsService.logedUser.getEmail()); // Eposta eklendi
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(customUserDetailsService.logedUser.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*30))
+                .signWith(getKey(), SignatureAlgorithm.HS256).compact();
+
+    }
     public String generateToken(String username) {
 
         Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", customUserDetailsService.roles); // Roller eklendi
+        claims.put("email", customUserDetailsService.logedUser.getEmail()); // Eposta eklendi
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -87,4 +103,34 @@ public class JwtService {
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
+    public Map<String, Object> getClaimsFromToken(String token) {
+        // Token içindeki bilgileri elde etmek için çözümleme
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getKey()) // Token imzalamada kullanılan key
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        // Claims objesinden tüm bilgileri map olarak al
+        Map<String, Object> claimsMap = new HashMap<>(claims);
+        return claimsMap;
+    }
+    public String getUsernameFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject(); // "sub" kısmı döner
+    }
+
+    public List<String> getRolesFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return (List<String>) claims.get("roles"); // Roller döner
+    }
+
 }

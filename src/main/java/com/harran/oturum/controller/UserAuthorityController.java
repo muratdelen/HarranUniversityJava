@@ -1,6 +1,8 @@
 package com.harran.oturum.controller;
 
 import com.harran.oturum.model.authority.Permission;
+import com.harran.oturum.model.authority.Role;
+import com.harran.oturum.service.oauth.CustomUserDetailsService;
 import com.harran.oturum.service.oauth.UserAuthority;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ public class UserAuthorityController {
 
     @Autowired
     private final UserAuthority userAuthority;
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     public UserAuthorityController(UserAuthority userAuthority) {
         this.userAuthority = userAuthority;
@@ -47,4 +51,9 @@ public class UserAuthorityController {
     public ResponseEntity<Iterable<Permission>> getUserPermissions(@PathVariable("applicationName") String applicationName, @PathVariable("pageUrl") String pageUrl ) {
         return ResponseEntity.ok(userAuthority.getMyPermissions(applicationName,pageUrl));
     }
+    @GetMapping("myRoles")
+    public ResponseEntity<Iterable<String>> getUserRolles() {
+        return ResponseEntity.ok(customUserDetailsService.roles);
+    }
+
 }

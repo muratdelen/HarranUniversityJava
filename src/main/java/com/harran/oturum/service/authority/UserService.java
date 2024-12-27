@@ -1,6 +1,7 @@
 package com.harran.oturum.service.authority;
 
 import com.harran.oturum.dao.authority.UserRepo;
+import com.harran.oturum.model.authority.Role;
 import com.harran.oturum.model.authority.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepo userRepo;
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private Iterable<Role> userRoles;
 
     @Autowired
     public UserService(UserRepo userRepo) {
@@ -34,5 +36,13 @@ public class UserService {
 
     public User updateUser(String username, User user) {
         return userRepo.save(user);
+    }
+
+    public Iterable<Role> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Iterable<Role> userRoles) {
+        this.userRoles = userRoles;
     }
 }

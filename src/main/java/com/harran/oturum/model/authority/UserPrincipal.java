@@ -6,12 +6,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class UserPrincipal  implements UserDetails {
 
     private static final long serialVersionUID = 1L;
     public User logedUser;
-    public UserPrincipal(User user) {this.logedUser = user;}
+    public List<String> roles;
+    public UserPrincipal(User user, List<String> roles) {
+        this.logedUser = user;
+        this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -119,4 +119,51 @@ public class UserAuthority {
 
         return thePermissions;
     }
+
+    public Iterable<Role> getMyRolles() {
+        // yetki isteyen kullanıcının bilgisi alındı
+        User user = customUserDetailsService.logedUser;
+//        User user = userRepo.findByUsername("muratdelen");
+        List<UserGroup> userGroups = userGroupRepo.findByUserIdAndActiveTrue(user.getId());
+
+        //seçilen uygulamaya göre kullanıcı rolleri getirildi
+        Iterable<UserRole> userRoles = userRoleRepo.findByUserIdAndActiveTrue(user.getId());
+
+        List<Role> theRoles = new java.util.ArrayList<>(List.of());
+        //Kullanıcıya ait roler alındı
+        for (UserRole userRole : userRoles) {
+            theRoles.add(userRole.getRole()) ;
+        }
+
+        for (UserGroup group : userGroups) {
+            //Gruba ait roller eklendi
+            List<GroupRole> groupRoles = groupRoleRepo.findByGroupIdAndActiveTrue(group.getId());
+            for (GroupRole groupRole : groupRoles) {
+                theRoles.add(groupRole.getRole()) ;
+            }
+        }
+        return theRoles;
+    }
+    public Iterable<String> getMyRolles(String username) {
+        User user = userRepo.findByUsername(username);
+        List<UserGroup> userGroups = userGroupRepo.findByUserIdAndActiveTrue(user.getId());
+
+        //seçilen uygulamaya göre kullanıcı rolleri getirildi
+        Iterable<UserRole> userRoles = userRoleRepo.findByUserIdAndActiveTrue(user.getId());
+
+        List<String> theRoles = new java.util.ArrayList<>(List.of());
+        //Kullanıcıya ait roler alındı
+        for (UserRole userRole : userRoles) {
+            theRoles.add(userRole.getRole().getName()) ;
+        }
+
+        for (UserGroup group : userGroups) {
+            //Gruba ait roller eklendi
+            List<GroupRole> groupRoles = groupRoleRepo.findByGroupIdAndActiveTrue(group.getId());
+            for (GroupRole groupRole : groupRoles) {
+                theRoles.add(groupRole.getRole().getName()) ;
+            }
+        }
+        return theRoles;
+    }
 }
