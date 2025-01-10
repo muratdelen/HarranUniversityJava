@@ -34,10 +34,10 @@ public class ApplicationController
     //Yeni bir grup eklemek için bilgileri yollanır.
     @PostMapping("application")
     public ResponseEntity<Application> createApplication(@RequestBody Application application){
-        Application newApplication = new Application();
-        newApplication.setName(application.getName());
-        newApplication.setDescription(application.getDescription());
-        return ResponseEntity.ok(applicationService.createApplication(newApplication));
+        //Application newApplication = new Application();
+        //newApplication.setName(application.getName());
+        //newApplication.setDescription(application.getDescription());
+        return ResponseEntity.ok(applicationService.createApplication(application));
     }
     //Tüm grup içinde grup adı ve açıklaması araması yapılıyor
     @GetMapping("search_applications/{searchText}")

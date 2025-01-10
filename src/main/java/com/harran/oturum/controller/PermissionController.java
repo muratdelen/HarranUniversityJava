@@ -34,10 +34,10 @@ public class PermissionController
     //Yeni bir grup eklemek için bilgileri yollanır.
     @PostMapping("Permission")
     public ResponseEntity<Permission> createPermission(@RequestBody Permission Permission){
-        Permission newPermission = new Permission();
-        newPermission.setName(Permission.getName());
-        newPermission.setDescription(Permission.getDescription());
-        return ResponseEntity.ok(permissionService.createPermission(newPermission));
+        //Permission newPermission = new Permission();
+       // newPermission.setName(Permission.getName());
+       // newPermission.setDescription(Permission.getDescription());
+        return ResponseEntity.ok(permissionService.createPermission(Permission));
     }
     //Tüm grup içinde grup adı ve açıklaması araması yapılıyor
     @GetMapping("search_Permissions/{searchText}")

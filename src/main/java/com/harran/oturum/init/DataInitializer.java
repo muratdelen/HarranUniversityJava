@@ -223,9 +223,8 @@ public class DataInitializer implements CommandLineRunner {
     /*
     Veritabanına ilk verileri girmesini sağlar
      */
-    @Override
-    public void run(String... args) throws Exception {
-        /*
+    public void intialize(){
+            /*
            Roller ve Yetkileri Tanımlanıyor.
            aşağıdaki sıraya göre sırasıyla işlem bittiğinde diğer işlem başlıyor.
          */
@@ -260,6 +259,10 @@ public class DataInitializer implements CommandLineRunner {
         /*
 
          */
+    }
+    @Override
+    public void run(String... args) throws Exception {
+        intialize();
 
 
     }

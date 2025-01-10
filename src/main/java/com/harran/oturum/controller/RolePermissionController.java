@@ -34,10 +34,10 @@ public class RolePermissionController
     //Yeni bir grup eklemek için bilgileri yollanır.
     @PostMapping("rolePermission")
     public ResponseEntity<RolePermission> createRolePermission(@RequestBody RolePermission rolePermission){
-        RolePermission newRolePermission = new RolePermission();
-        newRolePermission.setTitle(rolePermission.getTitle());
-        newRolePermission.setDescription(rolePermission.getDescription());
-        return ResponseEntity.ok(rolePermissionService.createRolePermission(newRolePermission));
+       // RolePermission newRolePermission = new RolePermission();
+       // newRolePermission.setTitle(rolePermission.getTitle());
+       // newRolePermission.setDescription(rolePermission.getDescription());
+        return ResponseEntity.ok(rolePermissionService.createRolePermission(rolePermission));
     }
     //Tüm grup içinde grup adı ve açıklaması araması yapılıyor
     @GetMapping("search_rolePermissions/{searchText}")

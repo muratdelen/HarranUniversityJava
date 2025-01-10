@@ -34,10 +34,10 @@ public class PageUrlController
     //Yeni bir grup eklemek için bilgileri yollanır.
     @PostMapping("pageUrl")
     public ResponseEntity<PageUrl> createPageUrl(@RequestBody PageUrl pageUrl){
-        PageUrl newPageUrl = new PageUrl();
-        newPageUrl.setName(pageUrl.getName());
-        newPageUrl.setDescription(pageUrl.getDescription());
-        return ResponseEntity.ok(pageUrlService.createPageUrl(newPageUrl));
+       // PageUrl newPageUrl = new PageUrl();
+       // newPageUrl.setName(pageUrl.getName());
+       // newPageUrl.setDescription(pageUrl.getDescription());
+        return ResponseEntity.ok(pageUrlService.createPageUrl(pageUrl));
     }
     //Tüm grup içinde grup adı ve açıklaması araması yapılıyor
     @GetMapping("search_pageUrls/{searchText}")

@@ -142,6 +142,10 @@ public class UserAuthority {
                 theRoles.add(groupRole.getRole()) ;
             }
         }
+        List<GroupRole> groupRoles = groupRoleRepo.findByGroupIdAndActiveTrue(user.getGroup().getId());
+        for (GroupRole groupRole : groupRoles) {
+            theRoles.add(groupRole.getRole()) ;
+        }
         return theRoles;
     }
     public Iterable<String> getMyRolles(String username) {
@@ -163,6 +167,10 @@ public class UserAuthority {
             for (GroupRole groupRole : groupRoles) {
                 theRoles.add(groupRole.getRole().getName()) ;
             }
+        }
+        List<GroupRole> groupRoles = groupRoleRepo.findByGroupIdAndActiveTrue(user.getGroup().getId());
+        for (GroupRole groupRole : groupRoles) {
+            theRoles.add(groupRole.getRole().getName()) ;
         }
         return theRoles;
     }

@@ -34,10 +34,10 @@ public class RoleController
     //Yeni bir grup eklemek için bilgileri yollanır.
     @PostMapping("role")
     public ResponseEntity<Role> createRole(@RequestBody Role role){
-        Role newRole = new Role();
-        newRole.setName(role.getName());
-        newRole.setDescription(role.getDescription());
-        return ResponseEntity.ok(roleService.createRole(newRole));
+       // Role newRole = new Role();
+        //newRole.setName(role.getName());
+        //newRole.setDescription(role.getDescription());
+        return ResponseEntity.ok(roleService.createRole(role));
     }
     //Tüm grup içinde grup adı ve açıklaması araması yapılıyor
     @GetMapping("search_roles/{searchText}")

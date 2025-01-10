@@ -34,10 +34,10 @@ public class UserGroupController
     //Yeni bir grup eklemek için bilgileri yollanır.
     @PostMapping("userGroup")
     public ResponseEntity<UserGroup> createUserGroup(@RequestBody UserGroup userGroup){
-        UserGroup newUserGroup = new UserGroup();
-        newUserGroup.setTitle(userGroup.getTitle());
-        newUserGroup.setDescription(userGroup.getDescription());
-        return ResponseEntity.ok(userGroupService.createUserGroup(newUserGroup));
+        //UserGroup newUserGroup = new UserGroup();
+        //newUserGroup.setTitle(userGroup.getTitle());
+        //newUserGroup.setDescription(userGroup.getDescription());
+        return ResponseEntity.ok(userGroupService.createUserGroup(userGroup));
     }
     //Tüm grup içinde grup adı ve açıklaması araması yapılıyor
     @GetMapping("search_userGroups/{searchText}")

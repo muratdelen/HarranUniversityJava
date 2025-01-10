@@ -1,7 +1,6 @@
 package com.harran.oturum.controller;
 
 import com.harran.oturum.model.authority.Permission;
-import com.harran.oturum.model.authority.Role;
 import com.harran.oturum.service.oauth.CustomUserDetailsService;
 import com.harran.oturum.service.oauth.UserAuthority;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,8 +10,6 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Objects;
 
 @RestController
 public class UserAuthorityController {
@@ -53,7 +50,8 @@ public class UserAuthorityController {
     }
     @GetMapping("myRoles")
     public ResponseEntity<Iterable<String>> getUserRolles() {
-        return ResponseEntity.ok(customUserDetailsService.roles);
+       //return ResponseEntity.ok(customUserDetailsService.roles);
+        return ResponseEntity.ok(userAuthority.getMyRolles(customUserDetailsService.logedUser.getUsername()));
     }
 
 }
