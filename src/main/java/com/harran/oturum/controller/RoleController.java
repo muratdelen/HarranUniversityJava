@@ -4,11 +4,12 @@ import com.harran.oturum.model.authority.Role;
 import com.harran.oturum.service.authority.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
-
+//@PreAuthorize("hasRole('ADMIN')")  // Sadece ADMIN rolüne sahip kullanıcılar erişebilir
 @RestController
 public class RoleController
 {
