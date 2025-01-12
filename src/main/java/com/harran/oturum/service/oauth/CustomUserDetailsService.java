@@ -56,9 +56,12 @@ public class CustomUserDetailsService implements UserDetailsService {
                     roles.add(groupRole.getRole().getName());
                 }
             }
-            List<GroupRole> groupRoles = groupRoleRepo.findByGroupIdAndActiveTrue(logedUser.getGroup().getId());
-            for (GroupRole groupRole : groupRoles) {
-                roles.add(groupRole.getRole().getName()) ;
+            // Kullanıcının grubu varsa, ona ait rolleri de ekle
+            if (logedUser.getGroup() != null) {
+                List<GroupRole> groupRoles = groupRoleRepo.findByGroupIdAndActiveTrue(logedUser.getGroup().getId());
+                for (GroupRole groupRole : groupRoles) {
+                    roles.add(groupRole.getRole().getName());
+                }
             }
             return new UserPrincipal(logedUser,roles);
         } catch (Exception e) {

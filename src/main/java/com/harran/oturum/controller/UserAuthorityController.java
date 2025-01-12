@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class UserAuthorityController {
 
@@ -29,14 +31,9 @@ public class UserAuthorityController {
     public String hello() {
         return "Hello World";
     }
-    @GetMapping("hello")
-    public String greet(HttpServletRequest request) {
-        return "Hello World "+request.getSession().getId();
-    }
-
     @GetMapping("about")
     public String about(HttpServletRequest request) {
-        return "Telusko "+request.getSession().getId();
+        return "Session Id: "+request.getSession().getId();
     }
     @GetMapping("csrf-token")
     public CsrfToken getCsrfToken(HttpServletRequest request) {
@@ -50,10 +47,10 @@ public class UserAuthorityController {
     public ResponseEntity<Iterable<Permission>> getUserPermissions(@PathVariable("applicationName") String applicationName, @PathVariable("pageUrl") String pageUrl ) {
         return ResponseEntity.ok(userAuthority.getMyPermissions(applicationName,pageUrl));
     }
-    @PreAuthorize("hasRole('ADMINnn')")
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @GetMapping("myRoles")
-    public ResponseEntity<Iterable<String>> getUserRolles() {
+    //@PreAuthorize("hasRole('ADMINnn')")
+    //@Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @GetMapping("myroles")
+    public ResponseEntity<List<String>> getUserRoles() {
        return ResponseEntity.ok(customUserDetailsService.roles);
        // return ResponseEntity.ok(userAuthority.getMyRolles(customUserDetailsService.logedUser.getUsername()));
     }

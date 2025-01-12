@@ -73,20 +73,20 @@ public class DataInitializer implements CommandLineRunner {
             new Permission("CONFIGURATION_MANAGE", "Yapılandırma yönetimi")
     );
     private final  List<Role> roles = List.of(
-            new Role("SUPER_ADMIN", "Tüm sistem üzerinde tam kontrol."),
-            new Role("ADMIN", "Belirli bir uygulama veya modül üzerinde tam kontrol."),
-            new Role("USER", "Sistemin standart kullanıcı özelliklerine erişim."),
-            new Role("GUEST", "Sınırlı erişim; herkese açık verilere erişim."),
-            new Role("CONTENT_MANAGER", "İçerik oluşturma ve düzenleme yetkisi."),
-            new Role("EDITOR", "Mevcut içerikleri düzenleme yetkisi."),
-            new Role("VIEWER", "Sadece içerikleri görüntüleme yetkisi."),
-            new Role("SUPPORT_AGENT", "Kullanıcı desteği sağlama yetkisi."),
-            new Role("DEVELOPER", "Uygulamayı geliştirme ve hata ayıklama yetkisi."),
-            new Role("OPERATOR", "Sistemin operasyonel süreçlerini yönetme yetkisi."),
-            new Role("REPORT_VIEWER", "Raporları görüntüleme yetkisi."),
-            new Role("REPORT_ANALYST", "Raporları analiz etme ve iş kararları için öneriler sunma."),
-            new Role("API_USER", "API uç noktalarına erişim hakkına sahip kullanıcı."),
-            new Role("RESOURCE_MANAGER", "Belirli bir kaynağı veya modülü yönetme yetkisi.")
+            new Role("ROLE_SUPER_ADMIN", "Tüm sistem üzerinde tam kontrol."),
+            new Role("ROLE_ADMIN", "Belirli bir uygulama veya modül üzerinde tam kontrol."),
+            new Role("ROLE_USER", "Sistemin standart kullanıcı özelliklerine erişim."),
+            new Role("ROLE_GUEST", "Sınırlı erişim; herkese açık verilere erişim."),
+            new Role("ROLE_CONTENT_MANAGER", "İçerik oluşturma ve düzenleme yetkisi."),
+            new Role("ROLE_EDITOR", "Mevcut içerikleri düzenleme yetkisi."),
+            new Role("ROLE_VIEWER", "Sadece içerikleri görüntüleme yetkisi."),
+            new Role("ROLE_SUPPORT_AGENT", "Kullanıcı desteği sağlama yetkisi."),
+            new Role("ROLE_DEVELOPER", "Uygulamayı geliştirme ve hata ayıklama yetkisi."),
+            new Role("ROLE_OPERATOR", "Sistemin operasyonel süreçlerini yönetme yetkisi."),
+            new Role("ROLE_REPORT_VIEWER", "Raporları görüntüleme yetkisi."),
+            new Role("ROLE_REPORT_ANALYST", "Raporları analiz etme ve iş kararları için öneriler sunma."),
+            new Role("ROLE_API_USER", "API uç noktalarına erişim hakkına sahip kullanıcı."),
+            new Role("ROLE_RESOURCE_MANAGER", "Belirli bir kaynağı veya modülü yönetme yetkisi.")
     );
 
     private final List<User> users = Arrays.asList(

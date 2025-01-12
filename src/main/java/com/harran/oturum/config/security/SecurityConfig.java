@@ -44,7 +44,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/register", "/login")
                         .permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/myroles").hasRole("SUPER_ADMIN") // "SuperAdmin" rolü için kısıtlama
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .anyRequest().authenticated()) // Diğer tüm isteklere kimlik doğrulaması
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
