@@ -1,6 +1,8 @@
 package com.harran.oturum.service.authority;
 
+import com.harran.oturum.dao.authority.GroupRepo;
 import com.harran.oturum.dao.authority.GroupRoleRepo;
+import com.harran.oturum.dao.authority.RoleRepo;
 import com.harran.oturum.model.authority.GroupRole;
 import com.harran.oturum.service.oauth.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,10 @@ public class GroupRoleService {
     private GroupRoleRepo groupRoleRepo;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private GroupRepo groupRepo;
+    @Autowired
+    private RoleRepo roleRepo;
     public Iterable<GroupRole> getAllGroupRoles() {
         return groupRoleRepo.findByActiveTrue();
     }
@@ -26,6 +32,8 @@ public class GroupRoleService {
     }
     public GroupRole createGroupRole(GroupRole groupRole) {
         groupRole.setCratedByUser(customUserDetailsService.logedUser);
+//        groupRole.setGroup(groupRepo.findByIdAndActiveTrue(groupRole.getGroup().getId()));
+//        groupRole.setRole(roleRepo.findByIdAndActiveTrue(groupRole.getRole().getId()));
         return groupRoleRepo.save(groupRole);
     }
     public GroupRole updateGroupRole(GroupRole old_groupRole, GroupRole new_groupRole) {

@@ -8,11 +8,11 @@
 		<version>3.4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.harran</groupId>
-	<artifactId>oturum</artifactId>
+	<groupId>com.muratdelen</groupId>
+	<artifactId>OAuth</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>oturum</name>
-	<description>Harran Session Manager</description>
+	<name>OAuth</name>
+	<description>OAuth Session Manager</description>
 	<url/>
 	<licenses>
 		<license>
@@ -69,19 +69,18 @@
 			<optional>true</optional>
 		</dependency>
 
+<!--		bunlar sonradan yükleniyor-->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
 			<version>0.11.5</version>
 		</dependency>
-
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
 			<version>0.11.5</version>
 			<scope>compile</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
