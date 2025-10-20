@@ -1,72 +1,54 @@
 package com.harran.oturum.service.oauth;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.harran.oturum.model.authority.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
 
-    private static final String SECRET = "TmV3U2VjcmV0S2V5Rm9ySldUU2lnbmluZ1B1cnBvc2VzMTIzNDU2Nzg=";
+    private final CustomUserDetailsService customUserDetailsService;
+    private final String secretKey;
 
-    private String secretKey;
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
-    public JwtService(){
-        secretKey = generateSecretKey();
-    }
-
-    public String generateSecretKey() {
-        try {
-            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey secretKey = keyGen.generateKey();
-            System.out.println("Secret Key : " + secretKey.toString());
-            return Base64.getEncoder().encodeToString(secretKey.getEncoded());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error generating secret key", e);
-        }
+    public JwtService(CustomUserDetailsService customUserDetailsService,
+                      @Value("${security.jwt.secret}") String secretKey) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.secretKey = secretKey;
     }
 
     public String generateToken() {
-
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", customUserDetailsService.roles); // Roller eklendi
-        claims.put("email", customUserDetailsService.logedUser.getEmail()); // Eposta eklendi
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(customUserDetailsService.logedUser.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*30))
-                .signWith(getKey(), SignatureAlgorithm.HS256).compact();
-
+        User loggedUser = customUserDetailsService.logedUser;
+        if (loggedUser == null) {
+            throw new IllegalStateException("No authenticated user available for token generation");
+        }
+        return generateToken(loggedUser.getUsername());
     }
     public String generateToken(String username) {
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", customUserDetailsService.roles); // Roller eklendi
-        claims.put("email", customUserDetailsService.logedUser.getEmail()); // Eposta eklendi
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(username)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*30))
-                .signWith(getKey(), SignatureAlgorithm.HS256).compact();
-
+        customUserDetailsService.loadUserByUsername(username);
+        List<String> roles = sanitizeRoles(customUserDetailsService.roles);
+        return buildToken(username, roles,
+                Optional.ofNullable(customUserDetailsService.logedUser)
+                        .map(User::getEmail)
+                        .orElse(null));
     }
 
     private Key getKey() {
@@ -104,33 +86,59 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
     public Map<String, Object> getClaimsFromToken(String token) {
-        // Token içindeki bilgileri elde etmek için çözümleme
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(getKey()) // Token imzalamada kullanılan key
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        // Claims objesinden tüm bilgileri map olarak al
-        Map<String, Object> claimsMap = new HashMap<>(claims);
-        return claimsMap;
+        return new HashMap<>(extractAllClaims(token));
     }
+
     public String getUsernameFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.getSubject(); // "sub" kısmı döner
+        return extractAllClaims(token).getSubject();
     }
 
     public List<String> getRolesFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return (List<String>) claims.get("roles"); // Roller döner
+        Claims claims = extractAllClaims(token);
+        Object rolesClaim = claims.get("roles");
+        if (rolesClaim instanceof List<?>) {
+            return ((List<?>) rolesClaim).stream()
+                    .filter(String.class::isInstance)
+                    .map(String.class::cast)
+                    .collect(Collectors.toList());
+        }
+        return List.of();
     }
 
+    public Optional<String> getEmailFromToken(String token) {
+        Object email = extractAllClaims(token).get("email");
+        return email instanceof String ? Optional.of((String) email) : Optional.empty();
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            extractAllClaims(token);
+            return !isTokenExpired(token);
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    private String buildToken(String username, List<String> roles, String email) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", roles);
+        if (email != null) {
+            claims.put("email", email);
+        }
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .signWith(getKey(), SignatureAlgorithm.HS256).compact();
+    }
+
+    private List<String> sanitizeRoles(List<String> roles) {
+        if (roles == null) {
+            return List.of();
+        }
+        Set<String> uniqueRoles = new LinkedHashSet<>(roles);
+        return List.copyOf(uniqueRoles);
+    }
 }
